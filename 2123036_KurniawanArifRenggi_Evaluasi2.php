@@ -1,93 +1,73 @@
 <?php
-/**
- * EVALUASI 2 - PEMROGRAMAN BERORIENTASI OBJEK
- * Inheritance, Method Overriding, dan Polymorphism
- * Studi kasus: Sistem Penyewaan Kendaraan
- *
- * Nama : Kurniawan Arif Renggi
- * NIM  : 2123036
- */
+// Evaluasi 2 PBO - Inheritance, Overriding, Polymorphism
+// Nama : Kurniawan Arif Renggi
+// NIM  : 2123036
 
-// ============================================================
-// PARENT CLASS
-// ============================================================
+// parent class
 class Kendaraan {
-    // Property umum milik semua kendaraan
     public $namaKendaraan;
     public $hargaSewaPerHari;
 
-    // Constructor: dijalankan setiap object dibuat.
-    // Child class (Mobil/Motor) mewarisi constructor ini,
-    // jadi object child bisa langsung memakai struktur parent.
     public function __construct($namaKendaraan, $hargaSewaPerHari) {
-        $this->namaKendaraan  = $namaKendaraan;
+        $this->namaKendaraan = $namaKendaraan;
         $this->hargaSewaPerHari = $hargaSewaPerHari;
     }
 
-    // Method tampilkanInfo() versi parent (informasi umum)
-    public function tampilkanInfo($lamaSewa = null) {
-        echo "Nama       : " . $this->namaKendaraan . "\n";
-        echo "Harga/Hari : Rp" . number_format($this->hargaSewaPerHari, 0, ',', '.') . "\n";
+    // method yang nanti di-override oleh child class
+    public function tampilkanInfo($lamaSewa) {
+        echo "Nama Kendaraan  : " . $this->namaKendaraan . "\n";
+        echo "Harga Sewa/Hari : Rp" . $this->hargaSewaPerHari . "\n";
     }
 }
 
-// ============================================================
-// CHILD CLASS 1: Mobil
-// ============================================================
+// child class 1
 class Mobil extends Kendaraan {
 
-    // METHOD OVERRIDING: tampilkanInfo() milik Kendaraan
-    // ditimpa dengan versi Mobil (informasi khusus mobil).
-    public function tampilkanInfo($lamaSewa = null) {
-        $lamaSewa = $lamaSewa ?: 0;
+    // method overriding : versi Mobil
+    public function tampilkanInfo($lamaSewa) {
         echo "=== DATA MOBIL ===\n";
-        parent::tampilkanInfo(); // gunakan bagian struktur milik parent class
-        echo "Lama Sewa  : " . $lamaSewa . " hari\n";
-        echo "Total Sewa : Rp" . number_format($this->hitungBiayaSewa($lamaSewa), 0, ',', '.') . "\n";
-        echo "Catatan    : sudah termasuk biaya layanan mobil Rp50.000\n";
+        echo "Nama Kendaraan  : " . $this->namaKendaraan . "\n";
+        echo "Harga Sewa/Hari : Rp" . $this->hargaSewaPerHari . "\n";
+        echo "Lama Sewa       : " . $lamaSewa . " hari\n";
+        echo "Total Sewa      : Rp" . $this->hitungBiayaSewa($lamaSewa) . "\n";
         echo "\n";
     }
 
-    // Perhitungan sewa khusus mobil: dasar + Rp50.000
     public function hitungBiayaSewa($lamaSewa) {
+        // mobil ada biaya layanan 50000
         return ($this->hargaSewaPerHari * $lamaSewa) + 50000;
     }
 }
 
-// ============================================================
-// CHILD CLASS 2: Motor
-// ============================================================
+// child class 2
 class Motor extends Kendaraan {
 
-    // METHOD OVERRIDING versi Motor
-    public function tampilkanInfo($lamaSewa = null) {
-        $lamaSewa = $lamaSewa ?: 0;
+    // method overriding : versi Motor
+    public function tampilkanInfo($lamaSewa) {
         echo "=== DATA MOTOR ===\n";
-        parent::tampilkanInfo(); // struktur parent dipakai ulang
-        echo "Lama Sewa  : " . $lamaSewa . " hari\n";
-        echo "Total Sewa : Rp" . number_format($this->hitungBiayaSewa($lamaSewa), 0, ',', '.') . "\n";
-        echo "Catatan    : sudah termasuk biaya layanan motor Rp20.000\n";
+        echo "Nama Kendaraan  : " . $this->namaKendaraan . "\n";
+        echo "Harga Sewa/Hari : Rp" . $this->hargaSewaPerHari . "\n";
+        echo "Lama Sewa       : " . $lamaSewa . " hari\n";
+        echo "Total Sewa      : Rp" . $this->hitungBiayaSewa($lamaSewa) . "\n";
         echo "\n";
     }
 
-    // Perhitungan sewa khusus motor: dasar + Rp20.000
     public function hitungBiayaSewa($lamaSewa) {
+        // motor ada biaya layanan 20000
         return ($this->hargaSewaPerHari * $lamaSewa) + 20000;
     }
 }
 
-// ============================================================
-// PROGRAM UTAMA
-// ============================================================
+// program utama
+echo "SISTEM PENYEWAAN KENDARAAN\n";
+echo "===========================\n\n";
 
-// Membuat object: 1 Mobil dan 1 Motor
 $mobil = new Mobil("Toyota Avanza", 300000);
 $motor = new Motor("Honda Vario", 100000);
 
 $lamaSewa = 3;
 
-// POLYMORPHISM: method yang sama (tampilkanInfo()) dipanggil
-// pada object yang berbeda, hasilnya menyesuaikan class masing-masing.
+// polymorphism : method sama dipanggil pada object yang berbeda
 $mobil->tampilkanInfo($lamaSewa);
 $motor->tampilkanInfo($lamaSewa);
 
